@@ -15,7 +15,7 @@ const express = require('express')
 
 const cors = require('cors')
 
-const bodyParser = require('bodyParser')
+const bodyParser = require('body-parser')
 
 const { response } = require('express')
 
@@ -23,7 +23,7 @@ const { next } = require('process')
 
 const { request } = require('http')
 
-const bodyParser = querire('bodyParser')
+//const bodyParser = querire('bodyParser')
 
 // Cria o obt app utilizando a classe do express
 
@@ -43,11 +43,21 @@ app.use(( request , response , next)=>{
 
 //EndPoints 01: Retorna  todos os dados de alunos
   
-app.get ('/v1/lion-school/aluno' , cors(),async function(request,response){
+app.get ('/v1/lion-school/aluno' , cors(),async function(request, response){
 
+    let controllerAluno = require('./controller/controller_aluno.js');
+     
+    let dados = await controllerAluno.selecionarTodosAluno();
 
-
+    if(dados){
+        response.json(dados);
+        response.status(200);
+    }else{
+        response.json();
+        response.status(404);
+    }
 });
+
 
 // EndPonit : 02 Retorna dados do aluno pelo ID
 
@@ -78,6 +88,10 @@ app.delete ('/v1/lion-school/aluno/:id' , cors(),async function(request,response
 
 
 });
+
+app.listen(8080 , function(){
+    console.log('Servidor aguardando requisiçoes')
+})
 
 
 
